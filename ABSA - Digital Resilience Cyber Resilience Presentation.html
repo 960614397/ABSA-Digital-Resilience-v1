@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Resilience — Cyber Resilience for ABSA Group</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #07111f;
+  --navy-2: #0d1d30;
+  --navy-3: #132540;
+  --navy-4: #1a3050;
+  --red: #C8102E;
+  --red-glow: rgba(200,16,46,0.15);
+  --gold: #F0A500;
+  --green: #00C896;
+  --white: #ffffff;
+  --off: #f0f4f8;
+  --muted: #607080;
+  --text: rgba(255,255,255,0.8);
+  --subtle: rgba(255,255,255,0.45);
+  --border: rgba(255,255,255,0.07);
+  --border-red: rgba(200,16,46,0.25);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  line-height: 1.6;
+}
+
+/* ── PROGRESS BAR ── */
+#progress {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 3px; background: transparent; z-index: 1000;
+}
+#progress-bar {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--red), var(--gold));
+  transition: width 0.1s;
+}
+
+/* ── STICKY NAV ── */
+nav {
+  position: fixed; top: 3px; left: 0; right: 0;
+  z-index: 999;
+  background: rgba(7,17,31,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 58px;
+}
+.nav-brand { font-size: 15px; font-weight: 800; letter-spacing: 0.05em; }
+.nav-brand span { color: var(--red); }
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  font-size: 12px; font-weight: 500; color: var(--subtle);
+  text-decoration: none; padding: 6px 12px; border-radius: 6px;
+  transition: all 0.2s; letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(255,255,255,0.07); }
+.nav-cta {
+  font-size: 12px; font-weight: 700;
+  background: var(--red); color: var(--white);
+  border: none; padding: 8px 18px; border-radius: 6px;
+  cursor: pointer; letter-spacing: 0.05em;
+  text-decoration: none; white-space: nowrap;
+}
+
+/* ── SECTION BASE ── */
+section { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
+.section-wrap { border-bottom: 1px solid var(--border); }
+.section-wrap:last-child { border-bottom: none; }
+
+/* ── EYEBROW ── */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--red);
+  margin-bottom: 18px;
+}
+.eyebrow::before {
+  content: ''; width: 20px; height: 2px; background: var(--red);
+}
+
+/* ── HEADINGS ── */
+h1 { font-size: clamp(44px, 5vw, 68px); font-weight: 900; line-height: 1.05; letter-spacing: -0.02em; }
+h2 { font-size: clamp(32px, 3.5vw, 48px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+h3 { font-size: 20px; font-weight: 700; line-height: 1.2; }
+h4 { font-size: 15px; font-weight: 700; }
+
+.text-red { color: var(--red); }
+.text-gold { color: var(--gold); }
+.text-green { color: var(--green); }
+.text-muted { color: var(--subtle); }
+
+.lead {
+  font-size: 18px; color: var(--subtle); line-height: 1.7;
+  max-width: 680px; margin-top: 16px;
+}
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  padding-top: 120px;
+  padding-bottom: 80px;
+  max-width: 100%;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+}
+.hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 60px; width: 100%; }
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(200,16,46,0.08) 0%, transparent 65%),
+              radial-gradient(ellipse 50% 50% at 10% 80%, rgba(240,165,0,0.04) 0%, transparent 60%);
+}
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.03;
+  background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
+  border-radius: 100px; padding: 8px 18px 8px 8px;
+  font-size: 12px; font-weight: 600; color: rgba(255,180,180,0.9);
+  margin-bottom: 28px;
+}
+.hero-badge-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--red); display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.hero-title { margin-bottom: 24px; }
+.hero-title em { color: var(--red); font-style: normal; display: block; }
+.hero-sub {
+  font-size: 19px; color: var(--subtle); line-height: 1.65;
+  max-width: 620px; margin-bottom: 48px;
+}
+.hero-pills {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 60px;
+}
+.pill {
+  border: 1px solid var(--border);
+  padding: 7px 16px; border-radius: 100px;
+  font-size: 13px; color: var(--subtle);
+  background: rgba(255,255,255,0.03);
+}
+.pill.accent { border-color: var(--border-red); color: rgba(255,160,160,0.85); }
+.hero-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.hero-stat {
+  padding: 28px 24px;
+  background: var(--navy-2);
+}
+.hero-stat-num {
+  font-size: 34px; font-weight: 900; color: var(--red);
+  letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px;
+}
+.hero-stat-label { font-size: 12px; color: var(--subtle); line-height: 1.4; }
+
+/* ── THREAT SECTION ── */
+.threat-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 56px;
+}
+.threat-card {
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px;
+  position: relative; overflow: hidden;
+}
+.threat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--red);
+}
+.threat-card.gold::before { background: var(--gold); }
+.threat-num {
+  font-size: 56px; font-weight: 900; color: var(--red);
+  letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px;
+}
+.threat-num.gold { color: var(--gold); }
+.threat-label { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.threat-body { font-size: 14px; color: var(--subtle); line-height: 1.6; }
+
+/* ── POPIA CALLOUT ── */
+.popia-box {
+  margin-top: 28px;
+  background: linear-gradient(135deg, rgba(200,16,46,0.07), rgba(200,16,46,0.03));
+  border: 1px solid var(--border-red); border-radius: 16px;
+  padding: 36px 40px;
+  display: flex; align-items: center; gap: 40px;
+}
+.popia-icon { font-size: 48px; flex-shrink: 0; }
+.popia-fine {
+  font-size: 48px; font-weight: 900; color: var(--red);
+  letter-spacing: -0.03em; margin-right: 24px; flex-shrink: 0;
+}
+.popia-text h3 { font-size: 18px; margin-bottom: 8px; }
+.popia-text p { font-size: 14px; color: var(--subtle); line-height: 1.6; max-width: 520px; }
+
+/* ── CONSEQUENCE CARDS ── */
+.consequence-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 48px;
+}
+.consequence-card {
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px;
+  display: flex; gap: 20px;
+}
+.c-icon {
+  width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
+}
+.c-icon.gold { background: rgba(240,165,0,0.08); border-color: rgba(240,165,0,0.2); }
+.c-icon.green { background: rgba(0,200,150,0.08); border-color: rgba(0,200,150,0.2); }
+.c-body h4 { font-size: 16px; margin-bottom: 8px; }
+.c-body p { font-size: 13px; color: var(--subtle); line-height: 1.6; }
+
+/* ── INCIDENT MANAGEMENT ── */
+.im-intro {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+  align-items: start; margin-top: 56px;
+}
+.im-metrics {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.metric-card {
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 24px;
+}
+.metric-card.highlight {
+  background: linear-gradient(135deg, rgba(200,16,46,0.08), rgba(200,16,46,0.03));
+  border-color: var(--border-red);
+}
+.metric-num { font-size: 36px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+.metric-label { font-size: 12px; color: var(--subtle); line-height: 1.4; }
+
+/* ── TIMELINE ── */
+.timeline { margin-top: 64px; }
+.timeline-title { font-size: 22px; font-weight: 700; margin-bottom: 36px; }
+.tl-steps {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+  position: relative;
+}
+.tl-steps::before {
+  content: '';
+  position: absolute; top: 22px; left: 22px; right: 22px;
+  height: 2px; background: linear-gradient(90deg, var(--red), rgba(200,16,46,0.2));
+}
+.tl-step { padding: 0 16px 0 0; }
+.tl-num {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--red); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 16px; margin-bottom: 18px;
+  position: relative; z-index: 1; flex-shrink: 0;
+}
+.tl-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.tl-body { font-size: 12px; color: var(--subtle); line-height: 1.55; }
+.tl-time {
+  display: inline-flex; margin-top: 10px;
+  font-size: 11px; font-weight: 700; color: var(--green);
+  background: rgba(0,200,150,0.08); border: 1px solid rgba(0,200,150,0.2);
+  padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em;
+}
+
+/* ── SOC CAPABILITIES ── */
+.soc-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px;
+}
+.soc-card {
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px; position: relative; overflow: hidden;
+}
+.soc-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  opacity: 0.4;
+}
+.soc-icon {
+  width: 44px; height: 44px; border-radius: 10px; margin-bottom: 18px;
+  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.soc-icon.green { background: rgba(0,200,150,0.08); border-color: rgba(0,200,150,0.2); }
+.soc-icon.gold { background: rgba(240,165,0,0.08); border-color: rgba(240,165,0,0.2); }
+.soc-card h4 { font-size: 16px; margin-bottom: 10px; }
+.soc-card p { font-size: 13px; color: var(--subtle); line-height: 1.6; }
+.soc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
+  color: rgba(255,140,150,0.9);
+}
+.tag.green { background: rgba(0,200,150,0.08); border-color: rgba(0,200,150,0.2); color: var(--green); }
+.tag.gold { background: rgba(240,165,0,0.08); border-color: rgba(240,165,0,0.2); color: var(--gold); }
+.tag.blue { background: rgba(100,180,255,0.06); border-color: rgba(100,180,255,0.15); color: rgba(150,200,255,0.9); }
+
+/* ── DWELL TIME CALLOUT ── */
+.dwell-box {
+  margin-top: 32px;
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px 40px;
+  display: flex; align-items: center; gap: 48px;
+}
+.dwell-arrow {
+  display: flex; align-items: center; gap: 20px;
+  flex-shrink: 0;
+}
+.dwell-val {
+  text-align: center;
+}
+.dwell-num { font-size: 40px; font-weight: 900; line-height: 1; }
+.dwell-unit { font-size: 12px; color: var(--subtle); margin-top: 4px; }
+.dwell-sep { font-size: 28px; color: var(--muted); }
+.dwell-body h4 { font-size: 18px; margin-bottom: 8px; }
+.dwell-body p { font-size: 14px; color: var(--subtle); line-height: 1.6; max-width: 560px; }
+
+/* ── SOLUTIONS STACK ── */
+.solutions-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 48px;
+}
+.sol-card {
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 24px 28px;
+  display: flex; gap: 18px; align-items: flex-start;
+  transition: border-color 0.2s, background 0.2s;
+}
+.sol-card:hover {
+  border-color: var(--border-red);
+  background: linear-gradient(135deg, rgba(200,16,46,0.05), var(--navy-2));
+}
+.sol-icon {
+  width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
+  display: flex; align-items: center; justify-content: center; font-size: 19px;
+}
+.sol-icon.g { background: rgba(0,200,150,0.08); border-color: rgba(0,200,150,0.2); }
+.sol-icon.b { background: rgba(100,180,255,0.06); border-color: rgba(100,180,255,0.15); }
+.sol-icon.o { background: rgba(240,165,0,0.08); border-color: rgba(240,165,0,0.2); }
+.sol-content h4 { font-size: 15px; margin-bottom: 6px; }
+.sol-content p { font-size: 13px; color: var(--subtle); line-height: 1.55; }
+.sol-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+
+/* ── USE CASES ── */
+.use-cases { margin-top: 48px; display: flex; flex-direction: column; gap: 20px; }
+.uc-card {
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+}
+.uc-top {
+  padding: 28px 32px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.uc-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.uc-challenge { font-size: 15px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
+.uc-body { font-size: 13px; color: var(--subtle); line-height: 1.6; }
+.uc-outcome {
+  padding: 18px 32px;
+  background: linear-gradient(90deg, rgba(0,200,150,0.06), transparent);
+  display: flex; align-items: center; gap: 16px;
+}
+.uc-outcome-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--green); flex-shrink: 0;
+}
+.uc-outcome-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+
+/* ── PARTNERS ── */
+.partners-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px;
+}
+.partner-card {
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 24px;
+  transition: border-color 0.2s;
+}
+.partner-card:hover { border-color: var(--border-red); }
+.partner-name { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.partner-cat {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 12px;
+}
+.partner-body { font-size: 12px; color: var(--subtle); line-height: 1.55; }
+
+/* ── WHY US ── */
+.why-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 56px; align-items: start;
+}
+.why-list { display: flex; flex-direction: column; gap: 20px; }
+.why-item { display: flex; gap: 18px; }
+.why-num {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: var(--red);
+}
+.why-item h4 { font-size: 15px; margin-bottom: 5px; }
+.why-item p { font-size: 13px; color: var(--subtle); line-height: 1.55; }
+
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+.checklist li {
+  display: flex; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.5;
+}
+.checklist li::before {
+  content: ''; flex-shrink: 0;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(0,200,150,0.1); border: 1px solid rgba(0,200,150,0.25);
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%2300C896' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: center;
+  margin-top: 1px;
+}
+
+.heritage-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 32px;
+}
+.h-stat {
+  padding: 28px 24px; background: var(--navy-2); text-align: center;
+}
+.h-num { font-size: 36px; font-weight: 900; color: var(--red); line-height: 1; margin-bottom: 6px; }
+.h-label { font-size: 12px; color: var(--subtle); }
+
+/* ── COMPLIANCE ── */
+.compliance-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px;
+}
+.comp-card {
+  background: var(--navy-2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px;
+}
+.comp-badge {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 5px; margin-bottom: 14px;
+  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
+  color: rgba(255,150,155,0.9);
+}
+.comp-badge.gold { background: rgba(240,165,0,0.08); border-color: rgba(240,165,0,0.2); color: var(--gold); }
+.comp-badge.green { background: rgba(0,200,150,0.08); border-color: rgba(0,200,150,0.2); color: var(--green); }
+.comp-badge.blue { background: rgba(100,180,255,0.06); border-color: rgba(100,180,255,0.15); color: rgba(150,200,255,0.9); }
+.comp-card h4 { font-size: 16px; margin-bottom: 10px; }
+.comp-card p { font-size: 13px; color: var(--subtle); line-height: 1.6; }
+
+/* ── CTA ── */
+#cta {
+  padding: 120px 60px;
+  max-width: 100%;
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+  position: relative; overflow: hidden;
+}
+.cta-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(200,16,46,0.07) 0%, transparent 60%);
+}
+.cta-inner { max-width: 900px; margin: 0 auto; text-align: center; position: relative; }
+.cta-inner h2 { margin-bottom: 20px; }
+.cta-inner .lead { margin: 0 auto 48px; text-align: center; }
+.cta-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 56px;
+}
+.cta-step {
+  background: var(--navy-3); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px 24px; text-align: left;
+}
+.cta-step-num { font-size: 36px; font-weight: 900; color: var(--red); line-height: 1; margin-bottom: 12px; }
+.cta-step h4 { font-size: 15px; margin-bottom: 8px; }
+.cta-step p { font-size: 13px; color: var(--subtle); line-height: 1.6; }
+
+.cta-footer {
+  border-top: 1px solid var(--border); padding-top: 40px;
+  display: flex; justify-content: center; gap: 64px;
+}
+.cta-fi { text-align: center; }
+.cta-fi-label { font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.cta-fi-val { font-size: 15px; font-weight: 600; }
+
+/* ── DIVIDER SECTION HEADER ── */
+.section-header { margin-bottom: 0; }
+.section-header h2 { margin-top: 8px; }
+
+/* ── ANIMATIONS ── */
+.fade-up {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 32px 60px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--muted);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ── WATERMARK ── */
+.absa-watermark { position: fixed; inset: 0; pointer-events: none; z-index: 0; display: flex; align-items: center; justify-content: center; }
+.absa-watermark img { width: 540px; max-width: 55vw; opacity: 0.09; mix-blend-mode: screen; }
+
+/* ── SEC RIBBON ── */
+.sec-ribbon { position: fixed; top: 160px; right: -50px; background: var(--red); color: var(--white); font-size: 9px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; padding: 7px 72px; transform: rotate(45deg); z-index: 1001; box-shadow: 0 2px 14px rgba(200,16,46,0.45); }
+
+/* ── HEX SECURITY GRID ── */
+.sec-hex { position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='104' viewBox='0 0 60 104'%3E%3Cpath d='M30 2L2 18v36l28 16 28-16V18z' fill='none' stroke='rgba(255,255,255,0.013)' stroke-width='1'/%3E%3C/svg%3E"); background-size: 60px 104px; }
+
+/* ── SCAN LINE ── */
+@keyframes scanline { 0% { top: -2px; opacity: 0.7; } 85% { opacity: 0.2; } 100% { top: 100%; opacity: 0; } }
+.scan-line { position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(200,16,46,0.6) 50%, transparent 100%); animation: scanline 9s linear infinite; pointer-events: none; z-index: 2; }
+
+/* ── NAV LOGOS ── */
+.nav-logos { display: flex; align-items: center; gap: 12px; }
+.nav-logos img { height: 26px; mix-blend-mode: screen; }
+.nav-logos img.logo-absa { height: 30px; }
+.nav-logos .sep { width: 1px; height: 20px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
+
+/* ── LUCIDE ICON SIZES ── */
+.hero-badge-dot svg, .div-icon svg { display: block; }
+</style>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+<!-- WATERMARK -->
+<div class="absa-watermark"><img src="ABSA Logo.png" alt=""></div>
+<!-- HEX GRID -->
+<div class="sec-hex"></div>
+<!-- CONFIDENTIAL RIBBON -->
+<div class="sec-ribbon">Confidential</div>
+
+<!-- PROGRESS -->
+<div id="progress"><div id="progress-bar"></div></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logos">
+    <img src="ABSA Logo.png" alt="ABSA" class="logo-absa">
+    <div class="sep"></div>
+    <img src="logo-dr.png" alt="Digital Resilience">
+    <div class="sep"></div>
+    <img src="logo-dsg.png" alt="DSG" style="height:20px;">
+  </div>
+  <div class="nav-links">
+    <a href="#about">About Us</a>
+    <a href="#why">Why Us</a>
+    <a href="#threat">Threat Reality</a>
+    <a href="#incident">Incident Management</a>
+    <a href="#soc">SOC Capabilities</a>
+    <a href="#solutions">Solutions</a>
+    <a href="#usecases">Use Cases</a>
+    <a href="#partners">Partners</a>
+    <a href="#compliance">Compliance</a>
+  </div>
+  <a class="nav-cta" href="#cta">Get Started →</a>
+</nav>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="scan-line"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"><i data-lucide="landmark" style="width:14px;height:14px;stroke-width:2;"></i></div>
+      Prepared exclusively for ABSA Group — Confidential
+    </div>
+    <h1 class="hero-title">
+      When an Incident Hits,
+      <em>Every Second Counts.</em>
+    </h1>
+    <p class="hero-sub">
+      Digital Resilience brings South Africa's most comprehensive incident management and cyber resilience programme — built specifically for the complexity, regulatory obligations, and threat exposure of Africa's leading financial institutions.
+    </p>
+    <div class="hero-pills">
+      <div class="pill accent">24/7 Security Operations Centre</div>
+      <div class="pill accent">Managed Detection & Response</div>
+      <div class="pill">POPIA · PCI-DSS · SARB Aligned</div>
+      <div class="pill">27 Years African Enterprise Delivery</div>
+      <div class="pill">11 Global Technology Partners</div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">&lt;8 min</div>
+        <div class="hero-stat-label">Mean time to detect — with our SOC active</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">24/7</div>
+        <div class="hero-stat-label">Security operations coverage, 365 days a year</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">11</div>
+        <div class="hero-stat-label">World-class technology platforms — unified, managed</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">27+</div>
+        <div class="hero-stat-label">Years of African enterprise delivery</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ ABOUT DSG ═══════════════════════ -->
+<div class="section-wrap" id="about">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">About Digital Resilience</div>
+    <h2>Not a Startup. Not a Reseller. <span class="text-red">27 Years of African Enterprise Trust.</span></h2>
+    <p class="lead">Digital Resilience is the dedicated cybersecurity division of Digital Solutions Group (DSG) — a South African enterprise digital partner founded in 1998. When you engage Digital Resilience, you are not onboarding a pure-play vendor. You are partnering with a business that has spent nearly three decades earning the trust of Africa's most demanding enterprises.</p>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; margin-top:48px;" class="fade-up">
+    <div>
+      <p style="font-size:15px; color:var(--subtle); line-height:1.75; margin-bottom:20px;">DSG has built its reputation on something rare in technology: <strong style="color:var(--white);">long-term accountability.</strong> Deep technical expertise, stable client partnerships, and the ability to operate at scale across complex African enterprise environments — across seven specialist divisions covering every dimension of digital transformation.</p>
+      <p style="font-size:15px; color:var(--subtle); line-height:1.75; margin-bottom:20px;">That heritage gives Digital Resilience something most pure-play security vendors simply cannot offer — the organisational depth, financial stability, and cross-domain knowledge of a proven enterprise delivery partner.</p>
+      <p style="font-size:15px; color:var(--subtle); line-height:1.75;">For ABSA, this means a cybersecurity partner with the breadth to understand your mobile, digital, and payments ecosystem — not just your perimeter.</p>
+      <div class="heritage-stats" style="margin-top:32px;">
+        <div class="h-stat"><div class="h-num">1998</div><div class="h-label">Year DSG was founded</div></div>
+        <div class="h-stat"><div class="h-num">27+</div><div class="h-label">Years enterprise delivery</div></div>
+        <div class="h-stat"><div class="h-num">7</div><div class="h-label">Specialist divisions</div></div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:14px; font-weight:700; color:var(--white); margin-bottom:16px;">DSG's Seven Business Divisions</p>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 16px; background:rgba(200,16,46,0.08); border:1px solid rgba(200,16,46,0.22); border-radius:10px;">
+          <div style="font-size:18px; flex-shrink:0;"><i data-lucide="shield" style="width:18px;height:18px;stroke-width:1.5;"></i></div>
+          <div>
+            <div style="font-size:14px; font-weight:700;">Digital Resilience <span style="font-size:9px; font-weight:800; letter-spacing:.15em; text-transform:uppercase; padding:2px 7px; border-radius:3px; background:var(--red); color:#fff; margin-left:6px; vertical-align:middle;">You Are Here</span></div>
+            <div style="font-size:11px; color:var(--subtle); margin-top:2px;">Managed cyber resilience — security operations, compliance, and human risk</div>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 16px; background:var(--navy-2); border:1px solid var(--border); border-radius:10px;">
+          <div style="font-size:18px; flex-shrink:0;"><i data-lucide="phone" style="width:18px;height:18px;stroke-width:1.5;"></i></div>
+          <div><div style="font-size:14px; font-weight:700;">CXG</div><div style="font-size:11px; color:var(--subtle); margin-top:2px;">Omnichannel contact centres and customer engagement solutions</div></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 16px; background:var(--navy-2); border:1px solid var(--border); border-radius:10px;">
+          <div style="font-size:18px; flex-shrink:0;"><i data-lucide="smartphone" style="width:18px;height:18px;stroke-width:1.5;"></i></div>
+          <div><div style="font-size:14px; font-weight:700;">MVNE</div><div style="font-size:11px; color:var(--subtle); margin-top:2px;">Mobile Virtual Network Enabler for brands and retailers</div></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 16px; background:var(--navy-2); border:1px solid var(--border); border-radius:10px;">
+          <div style="font-size:18px; flex-shrink:0;"><i data-lucide="trending-up" style="width:18px;height:18px;stroke-width:1.5;"></i></div>
+          <div><div style="font-size:14px; font-weight:700;">Broadbrand</div><div style="font-size:11px; color:var(--subtle); margin-top:2px;">Performance marketing and creative automation</div></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 16px; background:var(--navy-2); border:1px solid var(--border); border-radius:10px;">
+          <div style="font-size:18px; flex-shrink:0;"><i data-lucide="wrench" style="width:18px;height:18px;stroke-width:1.5;"></i></div>
+          <div><div style="font-size:14px; font-weight:700;">Digitalise</div><div style="font-size:11px; color:var(--subtle); margin-top:2px;">Digital transformation consulting and systems integration</div></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 16px; background:var(--navy-2); border:1px solid var(--border); border-radius:10px;">
+          <div style="font-size:18px; flex-shrink:0;"><i data-lucide="lock" style="width:18px;height:18px;stroke-width:1.5;"></i></div>
+          <div><div style="font-size:14px; font-weight:700;">eInsurer</div><div style="font-size:11px; color:var(--subtle); margin-top:2px;">Cyber insurance and digital risk platforms</div></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 16px; background:var(--navy-2); border:1px solid var(--border); border-radius:10px;">
+          <div style="font-size:18px; flex-shrink:0;"><i data-lucide="shopping-cart" style="width:18px;height:18px;stroke-width:1.5;"></i></div>
+          <div><div style="font-size:14px; font-weight:700;">DigitalMall</div><div style="font-size:11px; color:var(--subtle); margin-top:2px;">Marketplace, payments, and fulfilment</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ WHY US ═══════════════════════ -->
+<div class="section-wrap" id="why">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">Why Digital Resilience</div>
+    <h2>One Partner. Complete Coverage. <span class="text-red">Full Accountability.</span></h2>
+    <p class="lead">Most organisations juggle 10+ disconnected security tools with no unified ownership. We eliminate that complexity — and the dangerous gaps it creates.</p>
+  </div>
+
+  <div class="why-grid fade-up">
+    <div class="why-list">
+      <div class="why-item">
+        <div class="why-num">01</div>
+        <div>
+          <h4>27 Years of African Enterprise Delivery</h4>
+          <p>Digital Resilience is a division of DSG, founded in 1998 and trusted by leading African enterprises for over a quarter century. The financial stability, organisational depth, and long-term accountability that pure-play security vendors cannot offer.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">02</div>
+        <div>
+          <h4>Built for Africa — Not Retrofitted</h4>
+          <p>POPIA-aligned governance, local staffing across SA and SADC, and contextual expertise in the African threat landscape. We understand the regulatory environment, the attack patterns, and the operational realities that global vendors lack.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">03</div>
+        <div>
+          <h4>One Accountable Partner — No Vendor Finger-Pointing</h4>
+          <p>Unified SLAs across every capability. Single escalation path. When something goes wrong — and in security, things do — you call us. Not a vendor, not a reseller. One number, full accountability.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">04</div>
+        <div>
+          <h4>Managed Outcomes — Not Licences Bolted On</h4>
+          <p>We don't sell software and walk away. Our team actively monitors, responds, and continuously improves your security posture 24/7. You buy outcomes — not tools to manage yourself.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="background:var(--navy-2);border:1px solid var(--border);border-radius:16px;padding:32px;">
+        <h3 style="margin-bottom:20px;">What Makes Us Different for Financial Services</h3>
+        <ul class="checklist">
+          <li>POPIA, PCI-DSS, SARB, and ISO 27001 mapped to practical, operable controls</li>
+          <li>SOC designed to reduce dwell time from 277 days to under 8 minutes</li>
+          <li>AI-powered fraud detection purpose-built for payments and banking environments</li>
+          <li>Third-party risk monitoring across your full vendor and fintech ecosystem</li>
+          <li>Human risk programmes that measurably change behaviour — not just complete a module</li>
+          <li>Board-level and Risk Committee reporting from our vCISO team</li>
+          <li>Cyber insurance integration through DSG's eInsurer division</li>
+          <li>Local team, local knowledge, 27-year track record of accountability</li>
+        </ul>
+      </div>
+
+      <div class="heritage-stats">
+        <div class="h-stat"><div class="h-num">1998</div><div class="h-label">DSG Founded</div></div>
+        <div class="h-stat"><div class="h-num">7</div><div class="h-label">Specialist Divisions</div></div>
+        <div class="h-stat"><div class="h-num">11</div><div class="h-label">Technology Partners</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ THREAT REALITY ═══════════════════════ -->
+<div class="section-wrap" id="threat">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">The Threat Reality</div>
+    <h2>Financial Services Is the <span class="text-red">Most Targeted</span> Sector in Africa</h2>
+    <p class="lead">South African banks face a disproportionate volume of sophisticated attacks — driven by the value of the data and funds they hold. The question is no longer if ABSA will be attacked. It is whether ABSA will be ready.</p>
+  </div>
+
+  <div class="threat-grid fade-up">
+    <div class="threat-card">
+      <div class="threat-num">R91M+</div>
+      <div class="threat-label">Average cost of a single data breach in South Africa</div>
+      <div class="threat-body">IBM Cost of a Data Breach Report 2024. For a major financial institution, the real cost — including regulatory penalties, litigation, customer attrition, and remediation — can far exceed this figure.</div>
+    </div>
+    <div class="threat-card">
+      <div class="threat-num">277</div>
+      <div class="threat-label">Average days to detect and contain a breach without a SOC</div>
+      <div class="threat-body">Without active monitoring, attackers spend months inside your environment — harvesting credentials, mapping your network, and preparing for a devastating payload event. Every day of dwell time compounds the damage.</div>
+    </div>
+    <div class="threat-card gold">
+      <div class="threat-num gold">74%</div>
+      <div class="threat-label">Of all breaches involve a human element</div>
+      <div class="threat-body">Phishing, credential misuse, or simple human error is behind nearly three-quarters of all breaches. For a bank with thousands of employees, this is your largest and most persistent attack surface.</div>
+    </div>
+    <div class="threat-card gold">
+      <div class="threat-num gold">3rd</div>
+      <div class="threat-label">Africa's global ranking for targeted cyberattacks — and rising</div>
+      <div class="threat-body">African enterprises — particularly in financial services — are now actively targeted by sophisticated threat actors including state-sponsored groups and ransomware-as-a-service operators with specific FSI playbooks.</div>
+    </div>
+  </div>
+
+  <div class="popia-box fade-up">
+    <div class="popia-icon"><i data-lucide="scale" style="width:40px;height:40px;stroke-width:1.5;"></i></div>
+    <div class="popia-fine">R10M</div>
+    <div class="popia-text">
+      <h3>POPIA Changes the Stakes for ABSA's Board</h3>
+      <p>The Protection of Personal Information Act carries fines of up to R10 million and criminal liability for responsible parties. ABSA holds some of South Africa's most sensitive personal and financial data — making the institution a primary target for the Information Regulator as well as attackers. Inadequate breach notification timelines alone can trigger enforcement action.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ COST OF INACTION ═══════════════════════ -->
+<div class="section-wrap">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">The Cost of Inaction</div>
+    <h2>An Incident Without a Resilience Programme Is a <span class="text-red">Board-Level Event</span></h2>
+    <p class="lead">The cost of a breach far exceeds the cost of prevention. For a financial institution, the impact cascades across operations, regulation, reputation, and liability.</p>
+  </div>
+
+  <div class="consequence-grid fade-up">
+    <div class="consequence-card">
+      <div class="c-icon"><i data-lucide="alert-circle" style="width:22px;height:22px;stroke-width:1.5;"></i></div>
+      <div class="c-body">
+        <h4>Operational Shutdown & Revenue Loss</h4>
+        <p>Ransomware can take payment systems, ATM networks, and customer services offline for days or weeks. Every hour of downtime carries direct revenue cost plus recovery, forensics, and remediation — often exceeding R50 million for a major bank.</p>
+      </div>
+    </div>
+    <div class="consequence-card">
+      <div class="c-icon gold"><i data-lucide="scale" style="width:22px;height:22px;stroke-width:1.5;"></i></div>
+      <div class="c-body">
+        <h4>Regulatory Penalties & Criminal Exposure</h4>
+        <p>POPIA, PCI-DSS, and SARB mandates carry significant financial penalties. Regulators are now actively enforcing — not just issuing guidance. Personal criminal liability for responsible parties under POPIA adds a dimension no board wants to face.</p>
+      </div>
+    </div>
+    <div class="consequence-card">
+      <div class="c-icon"><i data-lucide="trending-down" style="width:22px;height:22px;stroke-width:1.5;"></i></div>
+      <div class="c-body">
+        <h4>Permanent Brand Damage & Customer Attrition</h4>
+        <p>60% of organisations that suffer a significant breach lose major clients within a year. A public breach event involving payment data or account compromise can trigger significant account closures, competitor switching, and lasting reputational damage with institutional investors.</p>
+      </div>
+    </div>
+    <div class="consequence-card">
+      <div class="c-icon green"><i data-lucide="link" style="width:22px;height:22px;stroke-width:1.5;"></i></div>
+      <div class="c-body">
+        <h4>Third-Party & Supply Chain Liability</h4>
+        <p>ABSA's ecosystem includes hundreds of fintech partners, payment processors, and technology vendors. Attackers increasingly target suppliers to breach their larger clients — and ABSA may bear the legal and reputational liability for a breach that originates in a vendor's environment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ INCIDENT MANAGEMENT ═══════════════════════ -->
+<div class="section-wrap" id="incident">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">Incident Management</div>
+    <h2>A Proven Framework — <span class="text-red">From Detection to Recovery</span></h2>
+    <p class="lead">Our incident management capability is built on structured methodology, 24/7 human analysts, and AI-driven platforms — designed to contain threats before they become breaches, and to meet ABSA's regulatory reporting obligations when they do.</p>
+  </div>
+
+  <div class="im-intro fade-up">
+    <div>
+      <p style="font-size:15px; color:var(--subtle); line-height:1.7; margin-bottom:24px;">When a threat actor enters your environment, you have a narrow window to detect and contain them before damage is done. The average organisation without a SOC takes 277 days. Our SOC brings that to hours — or minutes.</p>
+      <p style="font-size:15px; color:var(--subtle); line-height:1.7; margin-bottom:24px;">Beyond detection speed, incident management for a financial institution requires a structured post-incident process — root cause analysis, regulatory documentation, POPIA Section 22 breach notification support, and board-level reporting. We own this entire chain.</p>
+      <p style="font-size:15px; color:var(--subtle); line-height:1.7;">Our vCISO service ensures your board and Risk Committee are briefed clearly after every significant event — with the documentation your legal and compliance teams need.</p>
+    </div>
+    <div class="im-metrics">
+      <div class="metric-card highlight">
+        <div class="metric-num text-red">&lt; 8 min</div>
+        <div class="metric-label">Mean time to detect across protected environments</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" style="color:var(--green);">0</div>
+        <div class="metric-label">Ransomware executions post-ZeroDwell deployment</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" style="color:var(--gold);">80%</div>
+        <div class="metric-label">Analyst workload reduction via Agentic AI investigation</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num text-red">24/7</div>
+        <div class="metric-label">SOC coverage — human analysts, never automated-only</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline fade-up">
+    <h3 class="timeline-title">Our Five-Phase Incident Response Process</h3>
+    <div class="tl-steps">
+      <div class="tl-step">
+        <div class="tl-num">1</div>
+        <div class="tl-title">Detect</div>
+        <div class="tl-body">24/7 SOC monitors across endpoints, cloud, email, identity, and network. Securonix SIEM/UEBA correlates signals in real time — surfacing threats that rules miss.</div>
+        <span class="tl-time">&lt; 8 minutes</span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">2</div>
+        <div class="tl-title">Investigate</div>
+        <div class="tl-body">Certified analysts triage every alert. Securonix's Sam AI autonomously investigates incidents — reducing workload by 80% so nothing is missed during high-volume events.</div>
+        <span class="tl-time">AI + Human</span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">3</div>
+        <div class="tl-title">Contain</div>
+        <div class="tl-body">Automated SOAR playbooks and Xcitium ZeroDwell isolate threats at kernel level — preventing lateral movement and ransomware execution before damage occurs.</div>
+        <span class="tl-time">Automated</span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">4</div>
+        <div class="tl-title">Eradicate & Recover</div>
+        <div class="tl-body">Full root-cause analysis, malware removal, and environment hardening. Formal incident report for POPIA Section 22 and SARB regulatory notification obligations.</div>
+        <span class="tl-time">Regulatory Ready</span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">5</div>
+        <div class="tl-title">Improve</div>
+        <div class="tl-body">Every incident drives a posture update. vCISO provides board-level reporting and a prioritised remediation roadmap to ensure no incident repeats.</div>
+        <span class="tl-time">vCISO Owned</span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ SOC ═══════════════════════ -->
+<div class="section-wrap" id="soc">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">Security Operations Centre</div>
+    <h2>24/7 SOC — <span class="text-red">Detection, Investigation & Response</span></h2>
+    <p class="lead">Our SOC is the operational core of ABSA's cyber resilience programme — human analysts and AI working together, around the clock, across every layer of your environment.</p>
+  </div>
+
+  <div class="soc-grid fade-up">
+    <div class="soc-card">
+      <div class="soc-icon"><i data-lucide="shield" style="width:20px;height:20px;stroke-width:1.5;"></i></div>
+      <h4>Managed Detection & Response</h4>
+      <p>Continuous monitoring across endpoints, cloud, email, identity, and network. Our analysts investigate every alert — not just the high-priority ones. We don't rely on automation alone.</p>
+      <div class="soc-tags"><span class="tag">Bitdefender MDR</span><span class="tag">Trellix XDR</span><span class="tag">24/7</span></div>
+    </div>
+    <div class="soc-card">
+      <div class="soc-icon gold"><i data-lucide="bar-chart-2" style="width:20px;height:20px;stroke-width:1.5;"></i></div>
+      <h4>SIEM, UEBA & Agentic AI</h4>
+      <p>Securonix ingests data at scale and applies behavioural analytics to surface insider threats, credential misuse, and slow-burn attacks. Sam AI investigates autonomously — cutting analyst workload by 80%.</p>
+      <div class="soc-tags"><span class="tag gold">Securonix</span><span class="tag blue">UEBA</span><span class="tag blue">SOAR</span><span class="tag blue">Agentic AI</span></div>
+    </div>
+    <div class="soc-card">
+      <div class="soc-icon green"><i data-lucide="lock" style="width:20px;height:20px;stroke-width:1.5;"></i></div>
+      <h4>ZeroDwell Containment</h4>
+      <p>Every unknown process is containerised at kernel level and run in isolation until proven safe — so threats can never execute, even if never identified. Eliminates the detection gap that signature-based tools leave open.</p>
+      <div class="soc-tags"><span class="tag green">Xcitium</span><span class="tag green">Zero Trust</span><span class="tag green">Zero Execution</span></div>
+    </div>
+    <div class="soc-card">
+      <div class="soc-icon"><i data-lucide="search" style="width:20px;height:20px;stroke-width:1.5;"></i></div>
+      <h4>Threat Hunting & Offensive Security</h4>
+      <p>Proactive threat hunting, penetration testing, and continuous vulnerability management powered by Tenable. We find your weaknesses before attackers do — with a prioritised remediation plan mapped to asset criticality.</p>
+      <div class="soc-tags"><span class="tag">Pen Testing</span><span class="tag">Tenable</span><span class="tag">Red Team</span></div>
+    </div>
+    <div class="soc-card">
+      <div class="soc-icon gold"><i data-lucide="brain" style="width:20px;height:20px;stroke-width:1.5;"></i></div>
+      <h4>vCISO — Strategic Governance</h4>
+      <p>Fractional CISO leadership delivering board reporting, risk roadmaps, POPIA/SARB regulatory ownership, and strategic security governance. Your Exco gets clear, non-technical visibility into risk posture at all times.</p>
+      <div class="soc-tags"><span class="tag gold">Board Reporting</span><span class="tag gold">Risk Strategy</span><span class="tag gold">Governance</span></div>
+    </div>
+    <div class="soc-card">
+      <div class="soc-icon green"><i data-lucide="bot" style="width:20px;height:20px;stroke-width:1.5;"></i></div>
+      <h4>AI Fraud & Threat Intelligence</h4>
+      <p>Innerworks detects account takeovers, payment fraud, bot attacks, and synthetic identities in real time — using device fingerprinting, behavioural analytics, and location intelligence. Purpose-built for banking environments.</p>
+      <div class="soc-tags"><span class="tag green">Innerworks</span><span class="tag green">Fraud Prevention</span><span class="tag green">Bot Detection</span></div>
+    </div>
+  </div>
+
+  <div class="dwell-box fade-up">
+    <div class="dwell-arrow">
+      <div class="dwell-val">
+        <div class="dwell-num text-red">277 days</div>
+        <div class="dwell-unit">Without a SOC</div>
+      </div>
+      <div class="dwell-sep">→</div>
+      <div class="dwell-val">
+        <div class="dwell-num" style="color:var(--green);">&lt; 8 min</div>
+        <div class="dwell-unit">With Digital Resilience</div>
+      </div>
+    </div>
+    <div class="dwell-body">
+      <h4>Why Dwell Time Matters to ABSA</h4>
+      <p>A 277-day average breach dwell time means attackers spend months inside your environment before detection. For a financial institution, this translates to months of potential payment fraud, data exfiltration, and credential harvesting before any containment action. Our SOC eliminates this window — detecting and containing threats within minutes, not months.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:28px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px;" class="fade-up">
+    <div style="background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;">
+      <div style="font-size:11px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;">Gartner</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Magic Quadrant Leader</div>
+      <div style="font-size:13px;color:var(--subtle);">Securonix — 6 consecutive years in SIEM</div>
+    </div>
+    <div style="background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;">
+      <div style="font-size:11px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;">MITRE ATT&CK</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:4px;">#1 Ranked — 10+ Years</div>
+      <div style="font-size:13px;color:var(--subtle);">Bitdefender — top-ranked endpoint protection globally</div>
+    </div>
+    <div style="background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;">
+      <div style="font-size:11px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;">Coverage</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Full Stack — No Blind Spots</div>
+      <div style="font-size:13px;color:var(--subtle);">Endpoint · Cloud · Email · Network · Identity · OT</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ SOLUTIONS ═══════════════════════ -->
+<div class="section-wrap" id="solutions">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">Cyber Resilience Solutions</div>
+    <h2>Nine Integrated Capabilities — <span class="text-red">One Unified Programme</span></h2>
+    <p class="lead">Every layer of ABSA's security estate, covered by specialists and driven by the world's best platforms — deployed and operated as a single managed service with unified accountability.</p>
+  </div>
+
+  <div class="solutions-grid fade-up">
+    <div class="sol-card">
+      <div class="sol-icon"><i data-lucide="shield" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>Managed Security (SOC)</h4>
+        <p>24/7 MDR, incident response, and threat hunting. Human analysts backed by AI detecting and responding before threats become breaches.</p>
+        <div class="sol-tags"><span class="tag">MDR</span><span class="tag">24/7 SOC</span><span class="tag">Incident Response</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon b"><i data-lucide="brain" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>vCISO Service</h4>
+        <p>Fractional CISO leadership — board reporting, regulatory ownership, risk roadmaps, and strategic governance without a full-time executive hire.</p>
+        <div class="sol-tags"><span class="tag blue">Governance</span><span class="tag blue">Risk Strategy</span><span class="tag blue">Board Reporting</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon"><i data-lucide="monitor" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>Endpoint Security</h4>
+        <p>Bitdefender — #1 in MITRE ATT&CK evaluations. Servers, laptops, cloud workloads, and mobile. Single lightweight agent, full EDR visibility.</p>
+        <div class="sol-tags"><span class="tag">Bitdefender</span><span class="tag">EDR</span><span class="tag">Cloud Security</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon b"><i data-lucide="bar-chart-2" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>SIEM & XDR</h4>
+        <p>Securonix with UEBA, SOAR, and Agentic AI — detecting insider threats, credential abuse, and slow-burn attacks that rule-based tools miss.</p>
+        <div class="sol-tags"><span class="tag blue">Securonix</span><span class="tag blue">UEBA</span><span class="tag blue">SOAR</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon"><i data-lucide="search" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>Offensive Security</h4>
+        <p>Penetration testing, red teaming, and continuous vulnerability management powered by Tenable. We find your weaknesses before attackers do.</p>
+        <div class="sol-tags"><span class="tag">Pen Testing</span><span class="tag">Tenable</span><span class="tag">Vuln Management</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon"><i data-lucide="mail" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>Email & Network Defence</h4>
+        <p>Advanced threat protection and DMARC stopping phishing, BEC, and impersonation attacks at the perimeter — before they reach your people.</p>
+        <div class="sol-tags"><span class="tag">ATP</span><span class="tag">DMARC</span><span class="tag">Anti-Phishing</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon g"><i data-lucide="lock" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>Data Protection & POPIA</h4>
+        <p>DLP controls, data governance frameworks, and automated evidence collection — POPIA, PCI-DSS, and SARB data protection obligations fully managed.</p>
+        <div class="sol-tags"><span class="tag green">DLP</span><span class="tag green">POPIA</span><span class="tag green">Data Governance</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon o"><i data-lucide="users" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>Human Risk & Awareness</h4>
+        <p>Psychographic profiling, personalised interventions, and real-world phishing simulations. 68% phishing click reduction in 90 days.</p>
+        <div class="sol-tags"><span class="tag gold">OutThink</span><span class="tag gold">Beauceron</span><span class="tag gold">Phishing Sim</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon"><i data-lucide="clipboard-list" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>Third-Party Risk Intelligence</h4>
+        <p>Black Kite continuously monitors your full vendor ecosystem — Technical Cyber Ratings, Financial Risk, and Ransomware Susceptibility Index for every supplier.</p>
+        <div class="sol-tags"><span class="tag">Black Kite</span><span class="tag">TPRI</span><span class="tag">Supply Chain</span></div>
+      </div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon g"><i data-lucide="bot" style="width:19px;height:19px;stroke-width:1.5;"></i></div>
+      <div class="sol-content">
+        <h4>AI Fraud & Threat Intelligence</h4>
+        <p>Innerworks detects account takeovers, payment fraud, bot attacks, and synthetic identity threats in real time using behavioural analytics and device intelligence.</p>
+        <div class="sol-tags"><span class="tag green">Innerworks</span><span class="tag green">AI Security</span><span class="tag green">Fraud Prevention</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ USE CASES ═══════════════════════ -->
+<div class="section-wrap" id="usecases">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">Use Cases — Financial Services</div>
+    <h2>Problems We <span class="text-red">Solve</span> for Banks Every Day</h2>
+    <p class="lead">These are the most common scenarios financial services clients bring to us — and the outcomes we deliver.</p>
+  </div>
+
+  <div class="use-cases fade-up">
+    <div class="uc-card">
+      <div class="uc-top">
+        <div>
+          <div class="uc-label">Scenario 01 · Ransomware Response</div>
+          <div class="uc-challenge">"We Had a Near-Miss. We Can't Be This Exposed Again."</div>
+          <div class="uc-body">An organisation relying on legacy AV with no 24/7 monitoring experienced a near-miss ransomware event. Leadership demanded a complete rethink of detection and response — fast.</div>
+        </div>
+        <div>
+          <div class="uc-label">Our Response</div>
+          <div class="uc-body">Deployed Xcitium ZeroDwell Containment at the endpoint — isolating unknown processes before execution — combined with 24/7 SOC for real-time investigation and automated SOAR response playbooks.</div>
+        </div>
+      </div>
+      <div class="uc-outcome">
+        <div class="uc-outcome-label">Outcome</div>
+        <div class="uc-outcome-text">Zero successful ransomware executions post-deployment. Mean time to detect reduced from days to under 8 minutes.</div>
+      </div>
+    </div>
+
+    <div class="uc-card">
+      <div class="uc-top">
+        <div>
+          <div class="uc-label">Scenario 02 · Third-Party Risk</div>
+          <div class="uc-challenge">"We Have No Visibility Into Our Suppliers' Security."</div>
+          <div class="uc-body">Hundreds of fintech vendors and payment processors with no systematic way to assess their cyber posture — creating significant regulatory exposure and supply chain risk for the institution.</div>
+        </div>
+        <div>
+          <div class="uc-label">Our Response</div>
+          <div class="uc-body">Deployed Black Kite TPRI — continuous vendor cyber rating, Ransomware Susceptibility Indexing, and automated alerts when supplier posture deteriorates. No vendor cooperation required.</div>
+        </div>
+      </div>
+      <div class="uc-outcome">
+        <div class="uc-outcome-label">Outcome</div>
+        <div class="uc-outcome-text">Full vendor risk visibility within 30 days. High-risk suppliers identified and remediation mandated before any incident occurred.</div>
+      </div>
+    </div>
+
+    <div class="uc-card">
+      <div class="uc-top">
+        <div>
+          <div class="uc-label">Scenario 03 · Human Risk</div>
+          <div class="uc-challenge">"Our People Keep Clicking the Wrong Things."</div>
+          <div class="uc-body">Repeated phishing incidents despite annual mandatory training. Tick-box compliance wasn't changing behaviour at scale — and the CISO needed measurable proof of improvement.</div>
+        </div>
+        <div>
+          <div class="uc-label">Our Response</div>
+          <div class="uc-body">Human Risk Management with psychographic profiling targeting highest-risk users with personalised interventions. Real-world phishing simulations and UEBA monitoring for behavioural anomalies.</div>
+        </div>
+      </div>
+      <div class="uc-outcome">
+        <div class="uc-outcome-label">Outcome</div>
+        <div class="uc-outcome-text">Phishing click-through rate reduced by 68% in 90 days. High-risk user cohort halved within 6 months. Board-ready evidence of culture improvement delivered.</div>
+      </div>
+    </div>
+
+    <div class="uc-card">
+      <div class="uc-top">
+        <div>
+          <div class="uc-label">Scenario 04 · Payment Fraud</div>
+          <div class="uc-challenge">"We're Losing Revenue to Fraud We Can't See."</div>
+          <div class="uc-body">Escalating account takeover fraud, bot-driven inventory abuse, and synthetic identity signups undermining revenue, skewing analytics, and creating chargeback liability — all while traditional fraud tools generated too many false positives.</div>
+        </div>
+        <div>
+          <div class="uc-label">Our Response</div>
+          <div class="uc-body">Deployed Innerworks across the digital environment — device fingerprinting, behavioural analytics, and location intelligence to distinguish real users from compromised accounts and bots in real time.</div>
+        </div>
+      </div>
+      <div class="uc-outcome">
+        <div class="uc-outcome-label">Outcome</div>
+        <div class="uc-outcome-text">Account takeover incidents reduced by 74% within 60 days. Bot traffic dropped by 80%+. Chargeback rate fell significantly — recovering meaningful revenue lost to fraud.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ PARTNERS ═══════════════════════ -->
+<div class="section-wrap" id="partners">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">Technology Partners</div>
+    <h2>Powered by the <span class="text-red">World's Best Platforms</span></h2>
+    <p class="lead">11 global technology partners — giving ABSA enterprise-grade platforms without the procurement, integration, and management overhead of running them yourself.</p>
+  </div>
+
+  <div class="partners-grid fade-up">
+    <div class="partner-card">
+      <div class="partner-name">Bitdefender</div>
+      <div class="partner-cat">Endpoint · XDR · MDR · Cloud</div>
+      <div class="partner-body">#1 in MITRE ATT&CK evaluations for 10+ years. Best-in-class endpoint protection with a single lightweight agent. Consistently top-ranked across AV-Comparatives and AV-TEST.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-name">Securonix</div>
+      <div class="partner-cat">SIEM · UEBA · SOAR · Agentic AI</div>
+      <div class="partner-body">Gartner Magic Quadrant Leader — 6 consecutive years. Behavioural analytics surface threats rules miss. Sam AI autonomously investigates — 80% analyst workload reduction.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-name">Xcitium</div>
+      <div class="partner-cat">Zero Trust · ZeroDwell · XDR</div>
+      <div class="partner-body">Patented ZeroDwell Containment — every unknown process containerised at kernel level before execution. Eliminates the detection gap. Zero ransomware execution risk.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-name">Black Kite</div>
+      <div class="partner-cat">Third-Party Cyber Risk Intelligence</div>
+      <div class="partner-body">Continuous monitoring of your entire vendor ecosystem using OSINT — no vendor cooperation required. Technical ratings, financial risk quantification, and Ransomware Susceptibility Index.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-name">Tenable</div>
+      <div class="partner-cat">Exposure Management · OT · Cloud</div>
+      <div class="partner-body">Global leader in exposure management. Risk-based vulnerability prioritisation across IT, cloud, OT, and identity. Attack path analysis to harden before exploitation. Reduces remediation effort by 80%.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-name">OutThink</div>
+      <div class="partner-cat">Human Risk Management</div>
+      <div class="partner-body">Psychographic profiling for personalised interventions. Real-world phishing simulations with live payload libraries. Human risk score per user — measurable behaviour change, not tick-box compliance.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-name">Innerworks</div>
+      <div class="partner-cat">AI Fraud Prevention · Bot Detection</div>
+      <div class="partner-body">The internet's immune system. AI-powered detection of account takeovers, payment fraud, synthetic identities, and bot attacks. 1B+ assets protected. Single-line SDK integration.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-name">Trellix</div>
+      <div class="partner-cat">XDR · Endpoint · Network · Email</div>
+      <div class="partner-body">GenAI-powered unified XDR — correlating telemetry across endpoint, network, email, and data in real time. Surfaces attacks that siloed tools would never see in isolation.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ COMPLIANCE ═══════════════════════ -->
+<div class="section-wrap" id="compliance">
+<section>
+  <div class="section-header fade-up">
+    <div class="eyebrow">Compliance & Regulatory Alignment</div>
+    <h2>Built for South Africa's <span class="text-red">Financial Regulatory Environment</span></h2>
+    <p class="lead">We translate regulatory obligations into practical, operable controls — so ABSA's security programme and compliance requirements speak the same language, and your auditors get the evidence they need.</p>
+  </div>
+
+  <div class="compliance-grid fade-up">
+    <div class="comp-card">
+      <div class="comp-badge">POPIA</div>
+      <h4>Protection of Personal Information Act</h4>
+      <p>Full POPIA gap assessment, data governance framework, DLP, Information Officer support, and breach response procedures. Section 22 notification support with automated evidence collection for the Information Regulator.</p>
+    </div>
+    <div class="comp-card">
+      <div class="comp-badge gold">PCI-DSS v4.0</div>
+      <h4>Payment Card Data Security</h4>
+      <p>Cardholder data environment controls — continuous monitoring, log management, access controls, and vulnerability management aligned to PCI-DSS v4.0. Full CDE scoping and audit support.</p>
+    </div>
+    <div class="comp-card">
+      <div class="comp-badge green">ISO 27001</div>
+      <h4>Information Security Management</h4>
+      <p>End-to-end GRC support for ISO 27001 certification or alignment — risk register, control mapping, evidence collection, and ongoing audit support through our vCISO service.</p>
+    </div>
+    <div class="comp-card">
+      <div class="comp-badge">SARB / FSCA</div>
+      <h4>Financial Sector Regulation</h4>
+      <p>Governance framework aligned to SARB Guidance Note 3/2017 on cyber resilience and FSCA operational risk guidance — documented, auditable evidence of cyber controls for your Risk Committee.</p>
+    </div>
+    <div class="comp-card">
+      <div class="comp-badge blue">NIST CSF</div>
+      <h4>Cyber Security Framework</h4>
+      <p>Our programme maps to the NIST Cybersecurity Framework — Identify, Protect, Detect, Respond, Recover — giving ABSA a globally recognised structure for communicating cyber posture to international stakeholders.</p>
+    </div>
+    <div class="comp-card">
+      <div class="comp-badge gold">GRC Platform</div>
+      <h4>CyberCyte — Unified GRC & Exposure</h4>
+      <p>The first platform to unify Continuous Threat Exposure Management with full GRC. Automatically updates risk registers and compliance controls from live threat intelligence — eliminating manual reconciliation between vulnerability data and audit requirements.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════ CTA ═══════════════════════ -->
+<div id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-inner fade-up">
+    <div class="eyebrow" style="justify-content:center;">Proposed Next Steps — ABSA Group</div>
+    <h2>Know Your Risk.<br><span class="text-red">Build Your Resilience.</span></h2>
+    <p class="lead">We propose a structured engagement starting with a cyber risk assessment — mapping ABSA's current state, identifying highest-priority gaps, and proposing a practical path forward.</p>
+
+    <div class="cta-steps">
+      <div class="cta-step">
+        <div class="cta-step-num">01</div>
+        <h4>Cyber Risk Assessment</h4>
+        <p>A structured assessment of ABSA's current security posture — assets, gaps, compliance obligations, and highest-priority exposures.</p>
+      </div>
+      <div class="cta-step">
+        <div class="cta-step-num">02</div>
+        <h4>Tailored Solution Design</h4>
+        <p>A scoped capability stack from our nine integrated services — aligned to ABSA's risk profile, regulatory obligations, and the specific priorities identified in the assessment.</p>
+      </div>
+      <div class="cta-step">
+        <div class="cta-step-num">03</div>
+        <h4>Deployment & SOC Activation</h4>
+        <p>Engineers deploy and integrate across endpoints, cloud, email, network, and identity. Full SOC visibility from day one. 24/7 coverage active from activation date.</p>
+      </div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-fi">
+        <div class="cta-fi-label">Presented by</div>
+        <div class="cta-fi-val">Digital Resilience</div>
+      </div>
+      <div class="cta-fi">
+        <div class="cta-fi-label">Division of</div>
+        <div class="cta-fi-val">Digital Solutions Group (DSG)</div>
+      </div>
+      <div class="cta-fi">
+        <div class="cta-fi-label">Website</div>
+        <div class="cta-fi-val">digitalresilience.co.za</div>
+      </div>
+      <div class="cta-fi">
+        <div class="cta-fi-label">Prepared for</div>
+        <div class="cta-fi-val">ABSA Group — June 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>Digital Resilience — A division of Digital Solutions Group (DSG) · Johannesburg, South Africa · © 2026</div>
+  <div>Confidential — Prepared exclusively for ABSA Group</div>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progress-bar').style.width = (scrolled / total * 100) + '%';
+
+    // Active nav links
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    let current = '';
+    document.querySelectorAll('#hero, [id]').forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // Lucide icons
+  lucide.createIcons();
+
+  // Fade-up on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Animated counters
+  const counters = document.querySelectorAll('[data-count]');
+  const countObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = parseFloat(el.dataset.count);
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        const duration = 1500;
+        const start = performance.now();
+        const animate = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const value = progress * target;
+          el.textContent = prefix + (Number.isInteger(target) ? Math.floor(value) : value.toFixed(1)) + suffix;
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+        countObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(el => countObserver.observe(el));
+</script>
+</body>
+</html>
